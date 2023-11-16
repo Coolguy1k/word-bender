@@ -1,4 +1,8 @@
+//imports open, calls function, opens db 1 in jate, upgrades db, if already exists logs aleady exists ect
 import { openDB } from "idb";
+
+// const initdb = async () =>
+//
 
 const initdb = async () => {
   openDB("jate", 1, {
@@ -15,32 +19,31 @@ const initdb = async () => {
 
 // TODO: Add logic to a method that accepts some content and adds it to the database
 export const putDb = async (content) => {
-  const jateDb = await openDB('jate', 1);
-  const text = jateDb.transaction('jate', 'readwrite');
-  const store = text.objectStore('jate');
+  const jateDb = await openDB("jate", 1);
+  const tx = jateDb.transaction("jate", "readwrite");
+  const store = tx.objectStore("jate");
   const request = store.put({ value: content });
-  const contents = await request;
+  const result = await request;
 
-  if (contents) {
-    console.log("The data has been saved to the IndexedDB", contents);
+  if (result) {
+    console.log("Data saved to IndexedDB", result);
   } else {
-    console.error("putDb not implemented");
+    console.error("putDb no go");
   }
 };
-
 // TODO: Add logic for a method that gets all the content from the database
 export const getDb = async () => {
-  const jateDb = await openDB('jate', 1);
-  const text = jateDb.transaction('jate', 'readonly');
-  const store = text.objectStore('jate');
+  const jateDb = await openDB("jate", 1);
+  const tx = jateDb.transaction("jate", "readonly");
+  const store = tx.objectStore("jate");
   const request = store.getAll();
-  const contents = await request;
-  
-  if (contents) {
-    console.log('Retrieving all of the content from the IndexedDB', contents);
+  const result = await request;
+
+  if (result) {
+    console.log("fetching results from IndexedDB", result);
   } else {
-    console.error("getDb not implemented");
+    console.error("getDb no go ");
   }
-}
+};
 
 initdb();
